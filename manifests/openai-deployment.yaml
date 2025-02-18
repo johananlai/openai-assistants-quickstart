@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openai-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openai-app
+  template:
+    metadata:
+      labels:
+        app: openai-app
+    spec:
+      containers:
+        - name: openai-app
+          image: nextjs-docker:1.0
+          ports:
+            - containerPort: 3000
+          env:
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: openai-api-key
+                  key: apiKey
+            - name: OPENAI_ASSISTANT_ID
+              value: "<REPLACE_WITH_ASST_ID>"

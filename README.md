@@ -1,6 +1,6 @@
 # OpenAI Assistants API Quickstart
 
-A quick-start template using the OpenAI [Assistants API](https://platform.openai.com/docs/assistants/overview) with [Next.js](https://nextjs.org/docs).
+A fork of the quick-start template using the OpenAI [Assistants API](https://platform.openai.com/docs/assistants/overview) with [Next.js](https://nextjs.org/docs).
 <br/>
 <br/>
 ![OpenAI Assistants API Quickstart](https://github.com/openai/openai-assistants-quickstart/assets/27232/755e85e9-3ea4-421f-b202-3b0c435ea270)
@@ -41,6 +41,37 @@ npm run dev
 You can deploy this project to Vercel or any other platform that supports Next.js.
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fopenai%2Fopenai-assistants-quickstart&env=OPENAI_API_KEY,OPENAI_ASSISTANT_ID&envDescription=API%20Keys%20and%20Instructions&envLink=https%3A%2F%2Fgithub.com%2Fopenai%2Fopenai-assistants-quickstart%2Fblob%2Fmain%2F.env.example)
+
+For deploying locally with k8s using minikube:
+
+Add your OpenAI API key and assistant ID in `.env`:
+```
+cp .env.example .env
+```
+
+Build the image:
+```
+eval $(minikube docker-env)
+docker build -t nextjs-docker:1.0 .
+```
+
+Add your base64-encoded API key to `openai-secret.yaml` and apply the manifests:
+```
+kubectl apply -f ./manifests/.
+```
+
+Make sure the pod is running with `kubectl get po` and verify the app is running with `kubectl logs openai-app-XXXXX`, e.g.:
+```
+$ kubectl logs openai-app-5767b4ff87-ccp8t
+   ▲ Next.js 14.1.4
+   - Local:        http://localhost:3000
+   - Network:      http://0.0.0.0:3000
+
+ ✓ Ready in 143ms
+```
+
+Get the URL with `minikube service --url openai-app-service` and open in a browser.
+
 
 ## Overview
 
